@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build, Test, Sonar & Nexus
+    name: Build, Test & SonarCloud
     runs-on: ubuntu-latest
 
     steps:
@@ -36,14 +36,6 @@ jobs:
             -Dsonar.organization=juniorlole \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-
-      # Publier vers Nexus (uniquement sur main)
-      - name: Publish to Nexus
-        if: github.ref == 'refs/heads/main'
-        run: mvn deploy -DskipTests
-        env:
-          NEXUS_USER: ${{ secrets.NEXUS_USER }}
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
 
       # Uploader le JAR comme artefact
       - name: Upload JAR artifact
